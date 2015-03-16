@@ -1,0 +1,6 @@
+.panel.panel-primary
+  .panel-heading.text-center Pending Workpapers
+  .panel-body
+    .row(ng-repeat="workpaper in workpapers | filter:{pending:true}")
+      .col-md-12
+        a(href="/workpapers/{{workpaper._id}}") {{workpaper.title}}

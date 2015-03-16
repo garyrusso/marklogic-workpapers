@@ -1,0 +1,8 @@
+# MEAN Stack Changes
+This file describes changes made to the MarkLogic MEAN Stack Workpapers app per release
+
+## 0.1
+
+### New Features
+* Pending
+

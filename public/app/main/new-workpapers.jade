@@ -1,0 +1,7 @@
+.panel.panel-primary
+  .panel-heading.text-center New Workpapers
+  .panel-body
+    .row(ng-repeat="workpaper in workpapers | orderBy:'submitted':true | limitTo:10")
+      .col-md-3 {{workpaper.submitted | date:'MMM d'}}
+      .col-md-9
+        a(href="/workpapers/{{workpaper._id}}") {{workpaper.title}}
