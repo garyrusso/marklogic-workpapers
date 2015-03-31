@@ -1,9 +1,8 @@
 // Read documents from the database by URI.
 
 var marklogic = require('marklogic');
-var my = require('./my-connection.js');
-
-var db = marklogic.createDatabaseClient(my.connInfo);
+var config = require('../server/config/config');
+var db = marklogic.createDatabaseClient(config.mldb);
 
 db.documents.read(
   '/gs/cobra.json'

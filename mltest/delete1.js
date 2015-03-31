@@ -4,12 +4,11 @@
 // /gs/. You can also remove documents by document URI.
 
 var marklogic = require('marklogic');
-var my = require('./my-connection.js');
-
-var db = marklogic.createDatabaseClient(my.connInfo);
+var config = require('../server/config/config');
+var db = marklogic.createDatabaseClient(config.mldb);
 
 db.documents.removeAll(
-  {directory: '/gs/'}
+  {directory: '/client/ey001/workpapers/'}
 ).result( function(response) {
   console.log(response);
 });
