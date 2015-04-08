@@ -11,6 +11,6 @@ module.exports = function(config) {
   });
 
   userModel.createDefaultUsers();
-  workpaperModel.createDefaultWorkpapers();
+  //workpaperModel.createDefaultWorkpapers();
 
 };

@@ -1,8 +1,7 @@
 var auth = require('./auth'),
     users = require('../controllers/users'),
     workpapers = require('../controllers/workpapers'),
-    mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    marklogic = require('marklogic');
 
 module.exports = function(app) {
 

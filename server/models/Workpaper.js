@@ -1,48 +1,33 @@
 var marklogic = require('marklogic');
 var config = require('../config/config');
+
 var db = marklogic.createDatabaseClient(config.mldb);
+var qb = marklogic.queryBuilder;
 
 function createDefaultWorkpapers() { // constructor function
-
-  this.publicDocCount = 0;    // Public variable 
-
-  var privateCount = 0; // Private variable
-
-  this.privilegedMethod = function () {  // Public Method
-    console.log("privateCount: " + privateCount);
-  };
-
-  var docCount = 0; // Private variable
 
   db.documents.query(
     qb.where(
       qb.collection("workpapers")
     ).slice(1,30)
   )
-  .stream().
-    on("data", function(document) {
-      docCount++;
-      //console.log(document);
-      console.log('\nURI: ' + document.uri);
-      console.log('Title: ' + document.content.title);
-      console.log('Public Count: ' + docCount);
-    }).
-    on("error", function(error) {
-      console.log(error);
-    }).
-    on("end", function() {
-      console.log("end event... " + docCount);
+  .result(function(documents) {
+      console.log('workpaper count: ' + documents.length);
       
-      if(docCount === 0)
+      documents.map(function(document) {
+          console.log('\n URI: ' + document.uri);
+          console.log('Title: ' + document.content.title);
+      });
+
+      if(documents.length === 0)
         loadWorkpapers();
       else
-        console.log("no docs loaded... " + docCount);
+        console.log("\nNo Docs Loaded... " + documents.length);
+    })
+  .catch(function(error) {
+      console.log(error);
     });
-}
-
-var qb = marklogic.queryBuilder;
-
-//createDefaultWorkpapers();
+};
 
 // Document descriptors to pass to write(). 
 var workpapers = [

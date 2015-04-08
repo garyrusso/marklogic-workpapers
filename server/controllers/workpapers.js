@@ -6,49 +6,44 @@ var qb = marklogic.queryBuilder;
 
 exports.getWorkpapers = function(req, res) {
   
-  var collection = [];
-  
   db.documents.query(
     qb.where(
       qb.collection("workpapers")
     ).slice(1,30)
   )
-  .stream().
-    on("data", function(document) {
-      console.log('\n URI: ' + document.uri);
-      console.log('Title: ' + document.content.title);
-      collection.push(document.content);
-      console.log('workpaper count: ' + collection.length);
-    }).
-    on("error", function(error) {
+  .result(function(documents) {
+      console.log('workpaper count: ' + documents.length);
+      res.send(documents.map(function(document) {
+          console.log('\n URI: ' + document.uri);
+          console.log('Title: ' + document.content.title);
+          return document.content;
+          })
+      );
+    })
+  .catch(function(error) {
       console.log(error);
-    }).
-    on("end", function() {
-      console.log('end event.....workpapers collection size = ' + collection.length)
-      res.send(collection);
     });
 };
 
 exports.getWorkpaperById = function(req, res) {
-  var collection = [];
   
   db.documents.query(
     qb.where(
       qb.where(qb.byExample({_id:req.params.id}))
     )
   )
-  .stream().
-    on("data", function(document) {
-      console.log('\n URI: ' + document.uri);
+ .result(function(documents) {
+      console.log('\n 001 URI: ' + document.uri);
       console.log('Title: ' + document.content.title);
-      collection.push(document.content);
-      console.log('workpaper count: ' + collection.length);
-    }).
-    on("error", function(error) {
+      res.send(documents.map(function(document) {
+          console.log('\n URI: ' + document.uri);
+          console.log('Title: ' + document.content.title);
+          return document.content;
+          })
+      );
+    })
+  .catch(function(error) {
       console.log(error);
-    }).
-    on("end", function() {
-      console.log('end event.....workpapers collection size = ' + collection.length)
-      res.send(collection);
     });
 };
+
