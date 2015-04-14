@@ -26,6 +26,29 @@ exports.getUsers = function(req, res) {
     });
 };
 
+exports.getUserByUsername = function(req, res) {
+
+  console.log("GR001a ------- req.params.username: " + req.params.username);
+
+  db.documents.query(
+    qb.where(
+      qb.byExample({username:req.params.username})
+    )
+  )
+ .result(function(documents) {
+      res.send(documents.map(function(document) {
+          console.log('\n URI: ' + document.uri);
+          console.log('Name: ' + document.content.firstName + ' ' + document.content.lastName);
+          return document.content;
+          })
+      );
+    })
+  .catch(function(error) {
+      console.log(error);
+    });
+
+};
+
 exports.createUser = function(req, res, next) {
   var userData = req.body;
   userData.username = userData.username.toLowerCase();

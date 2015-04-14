@@ -8,21 +8,15 @@ var collection = [];
 
 db.documents.query(
   qb.where(
-    qb.collection("users")
-  ).slice(1,30)
+    qb.byExample({username:'ghopper'})
+  )
 )
 .result(function(documents) {
     console.log('user count: ' + documents.length);
     //collection.push(document.content);
     documents.map(function(document) {
-        console.log('\nURI:      ' + document.uri);
-        console.log('Name:       ' + document.content.firstName + ' ' + document.content.lastName);
-        console.log('firstName:  ' + document.content.firstName);
-        console.log('lastName:   ' + document.content.lastName);
-        console.log('username:   ' + document.content.username);
-        console.log('salt:       ' + document.content.salt);
-        console.log('hashed_pwd: ' + document.content.hashed_pwd);
-        //console.log('roles:      ' + document.content.roles);
+        console.log('\n URI: ' + document.uri);
+        console.log('Name: ' + document.content.firstName + ' ' + document.content.lastName);
         collection.push(document.content);
     });
     /*
@@ -37,5 +31,3 @@ db.documents.query(
 .catch(function(error) {
     console.log(error);
   });
-
-        

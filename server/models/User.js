@@ -6,16 +6,12 @@ var db = marklogic.createDatabaseClient(config.mldb);
 var qb = marklogic.queryBuilder;
 
 var userSchema = {
-  firstName: {type:String, required:'{PATH} is required!'},
-  lastName: {type:String, required:'{PATH} is required!'},
-  username: {
-    type:String,
-    required:'{PATH} is required!',
-    unique:true
-  },
-  salt: {type:String, required:'{PATH} is required!'},
-  hashed_pwd: {type:String, required:'{PATH} is required!'},
-  roles: [String]
+  firstName: 'Grace',
+  lastName:  'Hopper',
+  username: 'ghopper',
+  salt: '',
+  hashed_pwd: '',
+  roles: ['admin']
 };
 
 userSchema.methods = {
@@ -26,8 +22,6 @@ userSchema.methods = {
     return this.roles.indexOf(role) > -1;
   }
 };
-
-//var User = mongoose.model('User', userSchema);
 
 function createDefaultUsers() {
 
@@ -145,16 +139,16 @@ function loadUsers() {
 
 exports.getUserByUsername = function(req, res) {
 
-  console.log('\n getUserByUsername: ' + req.params.username);
+  console.log('\ngetUserByUsername: ' + req.params.username);
 
   db.documents.query(
     qb.where(
-      qb.where(qb.byExample({username:req.params.username}))
+      qb.byExample({username:req.params.username})
     )
   )
  .result(function(documents) {
       res.send(documents.map(function(document) {
-          console.log('\n URI: ' + document.uri);
+          console.log('\nURI: ' + document.uri);
           console.log('Name: ' + document.content.firstName + ' ' + document.content.lastName);
           return document.content;
           })
@@ -163,10 +157,6 @@ exports.getUserByUsername = function(req, res) {
   .catch(function(error) {
       console.log(error);
     });
-
-//  User.find({}).exec(function(err, collection) {
-//    res.send(collection);
-//  })
 
 };
 
